@@ -2,7 +2,9 @@
 
 namespace Meals\Domain\Menu;
 
+use Meals\Domain\Dish\Dish;
 use Meals\Domain\Dish\DishList;
+use Meals\Domain\Poll\PollDoesNotHaveAChosenDishException;
 
 class Menu
 {
@@ -50,5 +52,16 @@ class Menu
     public function getDishes(): DishList
     {
         return $this->dishes;
+    }
+
+    public function chooseADish(int $dishId): Dish
+    {
+        foreach ($this->dishes->getDishes() as $dish) {
+            if ($dish->getId() === $dishId) {
+                return $dish;
+            }
+        }
+
+        throw new ThereIsNoSuchDishOnTheMenu();
     }
 }
